@@ -126,12 +126,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RevenueController.cs" />
     <Compile Include="Controllers\StockController.cs" />
+    <Compile Include="Controllers\VolumeController.cs" />
     <Compile Include="Data\FavoriteRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MonthlyRevenue.cs" />
     <Compile Include="Models\StockArticle.cs" />
+    <Compile Include="Models\StockVolume.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +188,7 @@
     <Content Include="Views\Stock\T51sb10.cshtml" />
     <Content Include="Views\Revenue\Index.cshtml" />
     <Content Include="Views\Revenue\Favorites.cshtml" />
+    <Content Include="Views\Volume\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

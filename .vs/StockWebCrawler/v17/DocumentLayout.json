@@ -1,7 +1,36 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\StockWebCrawler\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\github\\StockWebCrawler\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\volumecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\volumecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\volume\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\volume\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\stock\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\stock\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\stockcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\stockcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\models\\stockvolume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:models\\stockvolume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 12,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,6 +83,97 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Volume\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
+              "RelativeToolTip": "Views\\Volume\\Index.cshtml",
+              "ViewState": "AgIAAAABAAAAAAAAAAAewE4AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-27T08:06:05.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VolumeController.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\VolumeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\VolumeController.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\VolumeController.cs",
+              "RelativeToolTip": "Controllers\\VolumeController.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAIAwwA4AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T08:05:18.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "StockVolume.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Models\\StockVolume.cs",
+              "RelativeDocumentMoniker": "Models\\StockVolume.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Models\\StockVolume.cs",
+              "RelativeToolTip": "Models\\StockVolume.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAADwv1YAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T08:04:35.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-27T08:01:36.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Stock\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Stock\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Stock\\Index.cshtml",
+              "RelativeToolTip": "Views\\Stock\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-27T08:01:30.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "StockController.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\StockController.cs",
+              "RelativeDocumentMoniker": "Controllers\\StockController.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\StockController.cs",
+              "RelativeToolTip": "Controllers\\StockController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T07:32:14.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T07:32:12.627Z",
+              "EditorCaption": ""
             }
           ]
         }
