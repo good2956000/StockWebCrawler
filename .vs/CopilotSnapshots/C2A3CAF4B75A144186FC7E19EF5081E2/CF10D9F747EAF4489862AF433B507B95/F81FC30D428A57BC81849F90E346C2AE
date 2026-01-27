@@ -1,0 +1,174 @@
+﻿@model List<MvcWebCrawler.Models.MonthlyRevenue>
+
+@{
+    ViewBag.Title = "每月營收資料";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form method="get" action="@Url.Action("Index", "Revenue")" class="form-inline">
+            <label for="industry" class="mr-2">產業別：</label>
+            <select name="industry" id="industry" class="form-control mr-2" onchange="this.form.submit()">
+                <option value="">-- 全部產業 --</option>
+                @if (ViewBag.Industries != null)
+                {
+                    foreach (var ind in ViewBag.Industries)
+                    {
+                        <option value="@ind" @(ViewBag.SelectedIndustry == ind ? "selected" : "")>@ind</option>
+                    }
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">篩選</button>
+        </form>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(ViewBag.SelectedIndustry))
+{
+    <div class="alert alert-info">
+        目前顯示：<strong>@ViewBag.SelectedIndustry</strong> 產業別的公司
+        <a href="@Url.Action("Index", "Revenue")" class="btn btn-sm btn-secondary ml-2">清除篩選</a>
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover" id="revenueTable">
+        <thead class="thead-dark">
+            <tr>
+                <th>我的最愛</th>
+                <th>公司代號</th>
+                <th>公司名稱</th>
+                <th>產業別</th>
+                <th>當月營收</th>
+                <th>上月營收</th>
+                <th>去年當月營收</th>
+                <th>上月比較增減(%)</th>
+                <th>去年同月增減(%)</th>
+                <th>當月累計營收</th>
+                <th>去年累計營收</th>
+                <th>前期比較增減(%)</th>
+                <th>備註</th>
+            </tr>
+        </thead>
+        <tbody id="revenueTableBody">
+            @if (Model != null && Model.Count > 0)
+            {
+                var favoriteIds = ViewBag.FavoriteCompanyIds as List<string> ?? new List<string>();
+                
+                foreach (var item in Model)
+                {
+                    var isFavorite = favoriteIds.Contains(item.公司代號);
+                    
+                    <tr data-company-id="@item.公司代號">
+                        <td class="text-center">
+                            <span class="favorite-star" data-company-id="@item.公司代號" style="cursor: pointer; font-size: 20px; color: @(isFavorite ? "#FFD700" : "#000");">
+                                @(isFavorite ? "★" : "☆")
+                            </span>
+                        </td>
+                        <td>@item.公司代號</td>
+                        <td>@item.公司名稱</td>
+                        <td>@item.產業別</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.當月營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.上月營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.去年當月營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatPercentage(item.上月比較增減)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatPercentage(item.去年同月增減)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.當月累計營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.去年累計營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatPercentage(item.前期比較增減)</td>
+                        <td>@item.備註</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="13" class="text-center">沒有資料</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model != null && Model.Count > 0)
+{
+    <p class="text-muted">共 @Model.Count 筆資料</p>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            console.log('Revenue page loaded');
+
+            // 點擊愛心事件
+            $(document).on('click', '.favorite-star', function() {
+                console.log('Star clicked');
+                var $star = $(this);
+                var companyId = $star.data('company-id');
+                var companyName = $star.closest('tr').find('td:eq(2)').text(); // 取得公司名稱
+                
+                console.log('CompanyId:', companyId, 'CompanyName:', companyName);
+
+                // 立即切換星星顯示（視覺回饋）
+                var currentStar = $star.text();
+                if (currentStar === '☆') {
+                    $star.text('★').css('color', '#FFD700');
+                } else {
+                    $star.text('☆').css('color', '#000');
+                }
+
+                // 呼叫後端 API
+                $.ajax({
+                    url: '@Url.Action("ToggleFavorite", "Revenue")',
+                    type: 'POST',
+                    data: { 
+                        companyId: companyId,
+                        companyName: companyName
+                    },
+                    success: function(response) {
+                        console.log('AJAX response:', response);
+                        if (response.success) {
+                            // 重新載入頁面以更新排序
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        } else {
+                            console.error('Operation failed:', response);
+                            // 還原星星狀態
+                            if (currentStar === '☆') {
+                                $star.text('☆').css('color', '#000');
+                            } else {
+                                $star.text('★').css('color', '#FFD700');
+                            }
+                            alert('操作失敗：' + (response.error || '請稍後再試'));
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', status, error);
+                        console.error('Response:', xhr.responseText);
+                        // 還原星星狀態
+                        if (currentStar === '☆') {
+                            $star.text('☆').css('color', '#000');
+                        } else {
+                            $star.text('★').css('color', '#FFD700');
+                        }
+                        alert('連線錯誤：' + error);
+                    }
+                });
+            });
+
+            console.log('Initialization complete');
+        });
+    </script>
+
+    <style>
+        .favorite-star {
+            transition: all 0.3s ease;
+        }
+        .favorite-star:hover {
+            transform: scale(1.2);
+        }
+    </style>
+}

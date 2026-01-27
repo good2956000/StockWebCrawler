@@ -1,0 +1,145 @@
+﻿using MvcWebCrawler.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.IO;
+using System.Web;
+
+namespace MvcWebCrawler.Data
+{
+    public class FavoriteRepository
+    {
+        private readonly string _connectionString;
+        private readonly string _dbPath;
+
+        public FavoriteRepository()
+        {
+            // 資料庫存放在 App_Data 資料夾
+            _dbPath = HttpContext.Current.Server.MapPath("~/App_Data/StockFavorites.db");
+            _connectionString = $"Data Source={_dbPath};Version=3;";
+            
+            InitializeDatabase();
+        }
+
+        private void InitializeDatabase()
+        {
+            // 確保 App_Data 資料夾存在
+            string appDataPath = Path.GetDirectoryName(_dbPath);
+            if (!Directory.Exists(appDataPath))
+            {
+                Directory.CreateDirectory(appDataPath);
+            }
+
+            // 如果資料庫不存在，建立它
+            if (!File.Exists(_dbPath))
+            {
+                SQLiteConnection.CreateFile(_dbPath);
+                
+                using (var connection = new SQLiteConnection(_connectionString))
+                {
+                    connection.Open();
+                    string createTableSql = @"
+                        CREATE TABLE IF NOT EXISTS FavoriteCompanies (
+                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            CompanyId TEXT NOT NULL UNIQUE,
+                            CompanyName TEXT,
+                            CreatedDate TEXT NOT NULL
+                        )";
+                    
+                    using (var command = new SQLiteCommand(createTableSql, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public List<string> GetAllFavoriteCompanyIds()
+        {
+            var favorites = new List<string>();
+            
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = "SELECT CompanyId FROM FavoriteCompanies ORDER BY CreatedDate DESC";
+                
+                using (var command = new SQLiteCommand(sql, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        favorites.Add(reader["CompanyId"].ToString());
+                    }
+                }
+            }
+            
+            return favorites;
+        }
+
+        public bool AddFavorite(string companyId, string companyName = "")
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(_connectionString))
+                {
+                    connection.Open();
+                    string sql = @"INSERT OR IGNORE INTO FavoriteCompanies 
+                                  (CompanyId, CompanyName, CreatedDate) 
+                                  VALUES (@CompanyId, @CompanyName, @CreatedDate)";
+                    
+                    using (var command = new SQLiteCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@CompanyId", companyId);
+                        command.Parameters.AddWithValue("@CompanyName", companyName);
+                        command.Parameters.AddWithValue("@CreatedDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveFavorite(string companyId)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(_connectionString))
+                {
+                    connection.Open();
+                    string sql = "DELETE FROM FavoriteCompanies WHERE CompanyId = @CompanyId";
+                    
+                    using (var command = new SQLiteCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@CompanyId", companyId);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool IsFavorite(string companyId)
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                string sql = "SELECT COUNT(*) FROM FavoriteCompanies WHERE CompanyId = @CompanyId";
+                
+                using (var command = new SQLiteCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@CompanyId", companyId);
+                    var count = Convert.ToInt32(command.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+    }
+}

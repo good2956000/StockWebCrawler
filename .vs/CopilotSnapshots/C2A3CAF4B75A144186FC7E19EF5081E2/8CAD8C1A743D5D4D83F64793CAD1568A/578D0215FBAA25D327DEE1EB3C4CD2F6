@@ -1,0 +1,23 @@
+﻿using MvcWebCrawler.Models;
+using System.Data.Entity;
+
+namespace MvcWebCrawler.Data
+{
+    public class StockDbContext : DbContext
+    {
+        public StockDbContext() : base("name=StockConnection")
+        {
+        }
+
+        public DbSet<FavoriteCompany> FavoriteCompanies { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+            // 設定索引
+            modelBuilder.Entity<FavoriteCompany>()
+                .HasIndex(f => f.CompanyId);
+        }
+    }
+}

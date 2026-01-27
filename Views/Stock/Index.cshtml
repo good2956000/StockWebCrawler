@@ -1,0 +1,13 @@
+@model List<MvcWebCrawler.Models.StockArticle>
+
+<h2>Stock</h2>
+<ul>
+    @foreach (var article in Model)
+    {
+        <li>
+            <span>@article.CompanyId</span> - <span>@article.CompanyName</span> -
+            <a href="@article.Url" target="_blank">@article.Title</a>
+        </li>
+    }
+</ul>
+

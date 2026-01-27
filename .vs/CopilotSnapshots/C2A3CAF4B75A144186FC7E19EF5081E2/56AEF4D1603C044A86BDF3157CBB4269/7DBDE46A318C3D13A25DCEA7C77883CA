@@ -1,0 +1,320 @@
+﻿@model List<MvcWebCrawler.Models.MonthlyRevenue>
+
+@{
+    ViewBag.Title = "每月營收資料";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form method="get" action="@Url.Action("Index", "Revenue")" class="form-inline">
+            <label for="industry" class="mr-2">產業別：</label>
+            <select name="industry" id="industry" class="form-control mr-2" onchange="this.form.submit()">
+                <option value="">-- 全部產業 --</option>
+                @if (ViewBag.Industries != null)
+                {
+                    foreach (var ind in ViewBag.Industries)
+                    {
+                        <option value="@ind" @(ViewBag.SelectedIndustry == ind ? "selected" : "")>@ind</option>
+                    }
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">篩選</button>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <form method="get" action="@Url.Action("Index", "Revenue")" class="form-inline">
+            <label for="searchCompanyId" class="mr-2">搜尋股票：</label>
+            <input type="text" 
+                   name="searchCompanyId" 
+                   id="searchCompanyId" 
+                   class="form-control mr-2" 
+                   placeholder="輸入股票代號或公司名稱"
+                   value="@ViewBag.SearchCompanyId"
+                   style="width: 250px;" />
+            <button type="submit" class="btn btn-success">
+                搜尋
+            </button>
+            @if (!string.IsNullOrEmpty(ViewBag.SearchCompanyId))
+            {
+                <a href="@Url.Action("Index", "Revenue")" class="btn btn-sm btn-secondary ml-2">清除</a>
+            }
+        </form>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(ViewBag.SelectedIndustry))
+{
+    <div class="alert alert-info">
+        目前顯示：<strong>@ViewBag.SelectedIndustry</strong> 產業別的公司
+        <a href="@Url.Action("Index", "Revenue")" class="btn btn-sm btn-secondary ml-2">清除篩選</a>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.SearchCompanyId))
+{
+    <div class="alert alert-success">
+        <strong>🔍 搜尋結果</strong> - 關鍵字：「<strong>@ViewBag.SearchCompanyId</strong>」
+        @if (Model != null && Model.Count > 0)
+        {
+            <span>找到 @Model.Count 筆資料</span>
+        }
+        else
+        {
+            <span class="text-danger">找不到符合的公司</span>
+        }
+        <a href="@Url.Action("Index", "Revenue")" class="btn btn-sm btn-secondary ml-2">清除搜尋</a>
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover" id="revenueTable">
+        <thead class="thead-dark">
+            <tr>
+                <th>我的最愛</th>
+                <th>公司代號</th>
+                <th>公司名稱</th>
+                <th>產業別</th>
+                <th>當月營收</th>
+                <th>上月營收</th>
+                <th>去年當月營收</th>
+                <th>上月比較增減(%)</th>
+                <th>去年同月增減(%)</th>
+                <th>當月累計營收</th>
+                <th>去年累計營收</th>
+                <th>前期比較增減(%)</th>
+                <th>備註</th>
+            </tr>
+        </thead>
+        <tbody id="revenueTableBody">
+            @if (Model != null && Model.Count > 0)
+            {
+                var favoriteIds = ViewBag.FavoriteCompanyIds as List<string> ?? new List<string>();
+                
+                foreach (var item in Model)
+                {
+                    var isFavorite = favoriteIds.Contains(item.公司代號);
+                    
+                    // 計算顏色類別
+                    var currentMonthColor = MvcWebCrawler.Controllers.RevenueController.GetComparisonColor(item.當月營收, item.上月營收);
+                    var accumulatedColor = MvcWebCrawler.Controllers.RevenueController.GetComparisonColor(item.當月累計營收, item.去年累計營收);
+                    
+                    <tr data-company-id="@item.公司代號">
+                        <td class="text-center">
+                            <span class="favorite-star" data-company-id="@item.公司代號" style="cursor: pointer; font-size: 20px; color: @(isFavorite ? "#FFD700" : "#000");">
+                                @(isFavorite ? "★" : "☆")
+                            </span>
+                        </td>
+                        <td>@item.公司代號</td>
+                        <td>@item.公司名稱</td>
+                        <td>@item.產業別</td>
+                        <td class="text-right @currentMonthColor">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.當月營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.上月營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.去年當月營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatPercentage(item.上月比較增減)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatPercentage(item.去年同月增減)</td>
+                        <td class="text-right @accumulatedColor">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.當月累計營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatNumber(item.去年累計營收)</td>
+                        <td class="text-right">@MvcWebCrawler.Controllers.RevenueController.FormatPercentage(item.前期比較增減)</td>
+                        <td>@item.備註</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="13" class="text-center">沒有資料</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model != null && Model.Count > 0)
+{
+    <p class="text-muted">共 @Model.Count 筆資料</p>
+}
+
+<!-- 回到頂部按鈕 -->
+<button id="backToTop" class="btn btn-primary" title="回到頂部">
+    <i class="arrow-up">↑</i>
+    <span>TOP</span>
+</button>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            console.log('Revenue page loaded');
+
+            // ========== 回到頂部按鈕功能 ==========
+            var $backToTop = $('#backToTop');
+
+            // 監聽滾動事件
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 300) {
+                    $backToTop.fadeIn();
+                } else {
+                    $backToTop.fadeOut();
+                }
+            });
+
+            // 點擊按鈕回到頂部
+            $backToTop.click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 600); // 600ms 平滑滾動
+                return false;
+            });
+
+            // ========== 點擊愛心事件 ==========
+            $(document).on('click', '.favorite-star', function() {
+                console.log('Star clicked');
+                var $star = $(this);
+                var companyId = $star.data('company-id');
+                var companyName = $star.closest('tr').find('td:eq(2)').text(); // 取得公司名稱
+                
+                console.log('CompanyId:', companyId, 'CompanyName:', companyName);
+
+                // 立即切換星星顯示（視覺回饋）
+                var currentStar = $star.text();
+                if (currentStar === '☆') {
+                    $star.text('★').css('color', '#FFD700');
+                } else {
+                    $star.text('☆').css('color', '#000');
+                }
+
+                // 呼叫後端 API
+                $.ajax({
+                    url: '@Url.Action("ToggleFavorite", "Revenue")',
+                    type: 'POST',
+                    data: { 
+                        companyId: companyId,
+                        companyName: companyName
+                    },
+                    success: function(response) {
+                        console.log('AJAX response:', response);
+                        if (response.success) {
+                            // 重新載入頁面以更新排序
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        } else {
+                            console.error('Operation failed:', response);
+                            // 還原星星狀態
+                            if (currentStar === '☆') {
+                                $star.text('☆').css('color', '#000');
+                            } else {
+                                $star.text('★').css('color', '#FFD700');
+                            }
+                            alert('操作失敗：' + (response.error || '請稍後再試'));
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', status, error);
+                        console.error('Response:', xhr.responseText);
+                        // 還原星星狀態
+                        if (currentStar === '☆') {
+                            $star.text('☆').css('color', '#000');
+                        } else {
+                            $star.text('★').css('color', '#FFD700');
+                        }
+                        alert('連線錯誤：' + error);
+                    }
+                });
+            });
+
+            console.log('Initialization complete');
+        });
+    </script>
+
+    <style>
+        /* 愛心星星樣式 */
+        .favorite-star {
+            transition: all 0.3s ease;
+        }
+        .favorite-star:hover {
+            transform: scale(1.2);
+        }
+
+        /* 加強粗體效果 - 營收比較 */
+        .fw-bold, .font-weight-bold {
+            font-weight: 900 !important; /* 超粗體 */
+        }
+
+        /* 綠色數字 - 成長 */
+        .text-success.fw-bold, .text-success.font-weight-bold {
+            color: #28a745 !important;
+            font-weight: 900 !important;
+        }
+
+        /* 紅色數字 - 衰退 */
+        .text-danger.fw-bold, .text-danger.font-weight-bold {
+            color: #dc3545 !important;
+            font-weight: 900 !important;
+        }
+
+        /* 回到頂部按鈕樣式 */
+        #backToTop {
+            display: none; /* 預設隱藏 */
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+            transition: all 0.3s ease;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #backToTop:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 123, 255, 0.6);
+        }
+
+        #backToTop:active {
+            transform: translateY(-2px);
+        }
+
+        #backToTop .arrow-up {
+            font-size: 20px;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        #backToTop span {
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* 響應式設計 - 手機版 */
+        @@media (max-width: 768px) {
+            #backToTop {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            #backToTop .arrow-up {
+                font-size: 18px;
+            }
+            
+            #backToTop span {
+                font-size: 9px;
+            }
+        }
+    </style>
+}

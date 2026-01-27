@@ -1,0 +1,64 @@
+﻿using MvcWebCrawler.Models;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+
+namespace MvcWebCrawler.Controllers
+{
+    public class RevenueController : Controller
+    {
+        // GET: Revenue
+        public async Task<ActionResult> Index()
+        {
+            var revenueData = await GetMonthlyRevenueAsync();
+            return View(revenueData);
+        }
+
+        private async Task<List<MonthlyRevenue>> GetMonthlyRevenueAsync()
+        {
+            var result = new List<MonthlyRevenue>();
+            string apiUrl = "https://openapi.twse.com.tw/v1/opendata/t187ap05_P";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetStringAsync(apiUrl);
+                    var jsonArray = JArray.Parse(response);
+
+                    foreach (var item in jsonArray)
+                    {
+                        var revenue = new MonthlyRevenue
+                        {
+                            出表日期 = item["出表日期"]?.ToString() ?? "",
+                            資料年月 = item["資料年月"]?.ToString() ?? "",
+                            公司代號 = item["公司代號"]?.ToString() ?? "",
+                            公司名稱 = item["公司名稱"]?.ToString() ?? "",
+                            產業別 = item["產業別"]?.ToString() ?? "",
+                            當月營收 = item["營業收入-當月營收"]?.ToString() ?? "",
+                            上月營收 = item["營業收入-上月營收"]?.ToString() ?? "",
+                            去年當月營收 = item["營業收入-去年當月營收"]?.ToString() ?? "",
+                            上月比較增減 = item["營業收入-上月比較增減(%)"]?.ToString() ?? "",
+                            去年同月增減 = item["營業收入-去年同月增減(%)"]?.ToString() ?? "",
+                            當月累計營收 = item["累計營業收入-當月累計營收"]?.ToString() ?? "",
+                            去年累計營收 = item["累計營業收入-去年累計營收"]?.ToString() ?? "",
+                            前期比較增減 = item["累計營業收入-前期比較增減(%)"]?.ToString() ?? "",
+                            備註 = item["備註"]?.ToString() ?? ""
+                        };
+
+                        result.Add(revenue);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    // 記錄錯誤或處理異常
+                    System.Diagnostics.Debug.WriteLine($"Error fetching revenue data: {ex.Message}");
+                }
+            }
+
+            return result;
+        }
+    }
+}

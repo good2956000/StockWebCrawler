@@ -1,0 +1,224 @@
+﻿using MvcWebCrawler.Data;
+using MvcWebCrawler.Models;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+
+namespace MvcWebCrawler.Controllers
+{
+    public class RevenueController : Controller
+    {
+        private readonly FavoriteRepository _favoriteRepo;
+
+        public RevenueController()
+        {
+            _favoriteRepo = new FavoriteRepository();
+        }
+
+        // GET: Revenue/Favorites - 只顯示我的最愛公司
+        public async Task<ActionResult> Favorites()
+        {
+            var allRevenueData = await GetMonthlyRevenueAsync();
+            
+            // 取得收藏清單
+            var favoriteIds = _favoriteRepo.GetAllFavoriteCompanyIds();
+            ViewBag.FavoriteCompanyIds = favoriteIds;
+            
+            // 只篩選出收藏的公司
+            var favoriteData = allRevenueData
+                .Where(x => favoriteIds.Contains(x.公司代號))
+                .OrderBy(x => x.公司代號)
+                .ToList();
+            
+            System.Diagnostics.Debug.WriteLine($"Favorites view: Total favorites: {favoriteIds.Count}, Displayed: {favoriteData.Count}");
+            
+            ViewBag.IsFavoritesView = true; // 標記這是我的最愛頁面
+            
+            return View(favoriteData);
+        }
+
+        // GET: Revenue
+        public async Task<ActionResult> Index(string industry = "")
+        {
+            var allRevenueData = await GetMonthlyRevenueAsync();
+            
+            // 取得所有產業別清單（去重複）
+            var allIndustries = allRevenueData
+                .Select(x => x.產業別)
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+            
+            // 將「建材營造」類別放在第一個
+            var industries = new List<string>();
+            var constructionIndustry = allIndustries.FirstOrDefault(x => x.Contains("建材營造"));
+            
+            if (constructionIndustry != null)
+            {
+                industries.Add(constructionIndustry);
+                industries.AddRange(allIndustries.Where(x => x != constructionIndustry));
+            }
+            else
+            {
+                industries = allIndustries;
+            }
+            
+            // 如果沒有指定產業，預設選擇「建材營造」
+            if (string.IsNullOrEmpty(industry) && constructionIndustry != null)
+            {
+                industry = constructionIndustry;
+            }
+            
+            ViewBag.Industries = industries;
+            ViewBag.SelectedIndustry = industry;
+            
+            // 根據選擇的產業別進行篩選
+            var filteredData = string.IsNullOrEmpty(industry) 
+                ? allRevenueData 
+                : allRevenueData.Where(x => x.產業別 == industry).ToList();
+            
+            // 取得收藏清單
+            var favoriteIds = _favoriteRepo.GetAllFavoriteCompanyIds();
+            ViewBag.FavoriteCompanyIds = favoriteIds;
+            
+            // ? 重點：在後端就排序，收藏的公司排在最前面
+            var sortedData = filteredData
+                .OrderByDescending(x => favoriteIds.Contains(x.公司代號))  // 收藏的在前面
+                .ThenBy(x => x.公司代號)  // 其他按公司代號排序
+                .ToList();
+            
+            System.Diagnostics.Debug.WriteLine($"Total items: {sortedData.Count}, Favorites: {favoriteIds.Count}");
+            
+            return View(sortedData);
+        }
+
+        // API: 取得所有收藏
+        [HttpGet]
+        public JsonResult GetFavorites()
+        {
+            var favorites = _favoriteRepo.GetAllFavoriteCompanyIds();
+            return Json(favorites, JsonRequestBehavior.AllowGet);
+        }
+
+        // API: 新增收藏
+        [HttpPost]
+        public JsonResult AddFavorite(string companyId, string companyName = "")
+        {
+            var success = _favoriteRepo.AddFavorite(companyId, companyName);
+            return Json(new { success = success });
+        }
+
+        // API: 移除收藏
+        [HttpPost]
+        public JsonResult RemoveFavorite(string companyId)
+        {
+            var success = _favoriteRepo.RemoveFavorite(companyId);
+            return Json(new { success = success });
+        }
+
+        // API: 切換收藏狀態
+        [HttpPost]
+        public JsonResult ToggleFavorite(string companyId, string companyName = "")
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"ToggleFavorite called: companyId={companyId}, companyName={companyName}");
+                
+                bool isFavorite = _favoriteRepo.IsFavorite(companyId);
+                bool success;
+                
+                if (isFavorite)
+                {
+                    success = _favoriteRepo.RemoveFavorite(companyId);
+                    System.Diagnostics.Debug.WriteLine($"Removed favorite: {companyId}, success={success}");
+                }
+                else
+                {
+                    success = _favoriteRepo.AddFavorite(companyId, companyName);
+                    System.Diagnostics.Debug.WriteLine($"Added favorite: {companyId}, success={success}");
+                }
+                
+                return Json(new { success = success, isFavorite = !isFavorite });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ToggleFavorite: {ex.Message}");
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        private async Task<List<MonthlyRevenue>> GetMonthlyRevenueAsync()
+        {
+            var result = new List<MonthlyRevenue>();
+            string apiUrl = "https://openapi.twse.com.tw/v1/opendata/t187ap05_L";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetStringAsync(apiUrl);
+                    var jsonArray = JArray.Parse(response);
+
+                    foreach (var item in jsonArray)
+                    {
+                        var revenue = new MonthlyRevenue
+                        {
+                            出表日期 = item["出表日期"]?.ToString() ?? "",
+                            資料年月 = item["資料年月"]?.ToString() ?? "",
+                            公司代號 = item["公司代號"]?.ToString() ?? "",
+                            公司名稱 = item["公司名稱"]?.ToString() ?? "",
+                            產業別 = item["產業別"]?.ToString() ?? "",
+                            當月營收 = item["營業收入-當月營收"]?.ToString() ?? "",
+                            上月營收 = item["營業收入-上月營收"]?.ToString() ?? "",
+                            去年當月營收 = item["營業收入-去年當月營收"]?.ToString() ?? "",
+                            上月比較增減 = item["營業收入-上月比較增減(%)"]?.ToString() ?? "",
+                            去年同月增減 = item["營業收入-去年同月增減(%)"]?.ToString() ?? "",
+                            當月累計營收 = item["累計營業收入-當月累計營收"]?.ToString() ?? "",
+                            去年累計營收 = item["累計營業收入-去年累計營收"]?.ToString() ?? "",
+                            前期比較增減 = item["累計營業收入-前期比較增減(%)"]?.ToString() ?? "",
+                            備註 = item["備註"]?.ToString() ?? ""
+                        };
+
+                        result.Add(revenue);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    // 記錄錯誤或處理異常
+                    System.Diagnostics.Debug.WriteLine($"Error fetching revenue data: {ex.Message}");
+                }
+            }
+
+            return result;
+        }
+
+        // 格式化數字為千分位
+        public static string FormatNumber(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return "";
+            
+            if (decimal.TryParse(value, out decimal number))
+            {
+                return number.ToString("N0"); // N0 = 千分位，無小數點
+            }
+            return value;
+        }
+
+        // 格式化百分比到小數點後兩位
+        public static string FormatPercentage(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return "";
+            
+            if (decimal.TryParse(value, out decimal number))
+            {
+                return number.ToString("N2"); // N2 = 千分位，小數點後兩位
+            }
+            return value;
+        }
+    }
+}

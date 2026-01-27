@@ -1,0 +1,124 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+
+namespace MvcWebCrawler.Data
+{
+    public class FavoriteRepository
+    {
+        private readonly string _filePath;
+
+        public FavoriteRepository()
+        {
+            // 資料存放在 App_Data 資料夾的 JSON 檔案
+            string appDataPath = HttpContext.Current.Server.MapPath("~/App_Data");
+            if (!Directory.Exists(appDataPath))
+            {
+                Directory.CreateDirectory(appDataPath);
+            }
+            _filePath = Path.Combine(appDataPath, "favorites.json");
+        }
+
+        private List<FavoriteItem> LoadFavorites()
+        {
+            if (!File.Exists(_filePath))
+            {
+                return new List<FavoriteItem>();
+            }
+
+            try
+            {
+                string json = File.ReadAllText(_filePath);
+                return JsonConvert.DeserializeObject<List<FavoriteItem>>(json) ?? new List<FavoriteItem>();
+            }
+            catch
+            {
+                return new List<FavoriteItem>();
+            }
+        }
+
+        private void SaveFavorites(List<FavoriteItem> favorites)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(favorites, Formatting.Indented);
+                File.WriteAllText(_filePath, json);
+            }
+            catch
+            {
+                // 記錄錯誤
+            }
+        }
+
+        public List<string> GetAllFavoriteCompanyIds()
+        {
+            var favorites = LoadFavorites();
+            return favorites.OrderByDescending(f => f.CreatedDate).Select(f => f.CompanyId).ToList();
+        }
+
+        public bool AddFavorite(string companyId, string companyName = "")
+        {
+            try
+            {
+                var favorites = LoadFavorites();
+                
+                // 檢查是否已存在
+                if (favorites.Any(f => f.CompanyId == companyId))
+                {
+                    return true; // 已存在，視為成功
+                }
+
+                favorites.Add(new FavoriteItem
+                {
+                    CompanyId = companyId,
+                    CompanyName = companyName,
+                    CreatedDate = DateTime.Now
+                });
+
+                SaveFavorites(favorites);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveFavorite(string companyId)
+        {
+            try
+            {
+                var favorites = LoadFavorites();
+                var itemToRemove = favorites.FirstOrDefault(f => f.CompanyId == companyId);
+                
+                if (itemToRemove != null)
+                {
+                    favorites.Remove(itemToRemove);
+                    SaveFavorites(favorites);
+                }
+                
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool IsFavorite(string companyId)
+        {
+            var favorites = LoadFavorites();
+            return favorites.Any(f => f.CompanyId == companyId);
+        }
+    }
+
+    public class FavoriteItem
+    {
+        public string CompanyId { get; set; }
+        public string CompanyName { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+}
