@@ -3,20 +3,36 @@
   "WorkspaceRootPath": "C:\\github\\StockWebCrawler\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\volumecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\volumecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\volume\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\volume\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\stock\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\stock\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\marketcapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\marketcapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\revenue\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\revenue\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\revenue\\favorites.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\revenue\\favorites.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\volumecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\volumecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\volume\\index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\volume\\index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\volume\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\volume\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\stockcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,6 +45,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\models\\stockvolume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:models\\stockvolume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\models\\marketcap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:models\\marketcap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\marketcap\\testtpexapi.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\marketcap\\testtpexapi.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\marketcap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\marketcap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Bookmark",
@@ -86,59 +114,72 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Volume\\Index.cshtml",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
-              "RelativeToolTip": "Views\\Volume\\Index.cshtml",
-              "ViewState": "AgIAAAABAAAAAAAAAAAewE4AAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T08:06:05.594Z",
+              "DocumentIndex": 2,
+              "Title": "MarketCapController.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\MarketCapController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MarketCapController.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\MarketCapController.cs",
+              "RelativeToolTip": "Controllers\\MarketCapController.cs",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAIwIAAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-28T00:38:34.089Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 11,
+              "Title": "MarketCap.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Models\\MarketCap.cs",
+              "RelativeDocumentMoniker": "Models\\MarketCap.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Models\\MarketCap.cs",
+              "RelativeToolTip": "Models\\MarketCap.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-28T00:38:15.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Revenue\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Index.cshtml",
+              "RelativeToolTip": "Views\\Revenue\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-28T00:36:50.478Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Favorites.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Favorites.cshtml",
+              "RelativeDocumentMoniker": "Views\\Revenue\\Favorites.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Favorites.cshtml",
+              "RelativeToolTip": "Views\\Revenue\\Favorites.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-28T00:36:48.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "VolumeController.cs",
               "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\VolumeController.cs",
               "RelativeDocumentMoniker": "Controllers\\VolumeController.cs",
               "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\VolumeController.cs",
               "RelativeToolTip": "Controllers\\VolumeController.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAIAwwA4AAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAIIAAAAAAAAAAAAnwJsAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-27T08:05:18.08Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "StockVolume.cs",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Models\\StockVolume.cs",
-              "RelativeDocumentMoniker": "Models\\StockVolume.cs",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Models\\StockVolume.cs",
-              "RelativeToolTip": "Models\\StockVolume.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAADwv1YAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T08:04:35.805Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T08:01:36.866Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Stock\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Stock\\Index.cshtml",
@@ -151,7 +192,85 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAADUAAAAAAAAAAAAewFEAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-27T08:01:36.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "TestTPExAPI.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\TestTPExAPI.cshtml",
+              "RelativeDocumentMoniker": "Views\\MarketCap\\TestTPExAPI.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\TestTPExAPI.cshtml",
+              "RelativeToolTip": "Views\\MarketCap\\TestTPExAPI.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-28T00:55:37.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\MarketCap\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\Index.cshtml",
+              "RelativeToolTip": "Views\\MarketCap\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-28T01:29:01.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "StockVolume.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Models\\StockVolume.cs",
+              "RelativeDocumentMoniker": "Models\\StockVolume.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Models\\StockVolume.cs",
+              "RelativeToolTip": "Models\\StockVolume.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAADwv1YAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T08:04:35.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Volume\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
+              "RelativeToolTip": "Views\\Volume\\Index.cshtml",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAewIkAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-27T08:06:05.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Volume\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Volume\\Index.cshtml",
+              "RelativeToolTip": "Views\\Volume\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-27T08:30:13.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "StockController.cs",
               "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\StockController.cs",
               "RelativeDocumentMoniker": "Controllers\\StockController.cs",
@@ -164,7 +283,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",

@@ -12,16 +12,35 @@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
             @Html.ActionLink("股票資訊系統", "Index", "Stock", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="切換導覽" aria-controls="navbarSupportedContent"
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" title="切換導覽" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("重大即時", "Index", "Stock", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("每月營收", "Index", "Revenue", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("每月營收-我的最愛", "Favorites", "Revenue", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("查詢個股交易量", "Index", "Volume", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">
+                        @Html.ActionLink("重大即時", "Index", "Stock", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="revenueDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            營收資訊
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="revenueDropdown">
+                            @Html.ActionLink("每月營收", "Index", "Revenue", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("我的最愛", "Favorites", "Revenue", new { area = "" }, new { @class = "dropdown-item" })
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="queryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            交易查詢
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="queryDropdown">
+                            @Html.ActionLink("個股交易量", "Index", "Volume", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("市值排行", "Index", "MarketCap", new { area = "" }, new { @class = "dropdown-item" })
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -37,5 +56,35 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    
+    <script>
+        $(document).ready(function() {
+            // 確保下拉選單在點擊時能正常運作
+            $('.dropdown-toggle').dropdown();
+            
+            // 手機版：點擊下拉選單保持打開狀態
+            $('.dropdown').on('show.bs.dropdown', function() {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+            });
+            
+            $('.dropdown').on('hide.bs.dropdown', function() {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+            });
+            
+            // 桌面版：滑鼠懸停自動展開（可選）
+            if ($(window).width() > 768) {
+                $('.dropdown').hover(
+                    function() {
+                        $(this).addClass('show');
+                        $(this).find('.dropdown-menu').addClass('show');
+                    },
+                    function() {
+                        $(this).removeClass('show');
+                        $(this).find('.dropdown-menu').removeClass('show');
+                    }
+                );
+            }
+        });
+    </script>
 </body>
 </html>
