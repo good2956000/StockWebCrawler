@@ -123,15 +123,18 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Etf00919Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarketCapController.cs" />
     <Compile Include="Controllers\RevenueController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\VolumeController.cs" />
     <Compile Include="Data\FavoriteRepository.cs" />
+    <Compile Include="Data\RoeRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Etf00919.cs" />
     <Compile Include="Models\MarketCap.cs" />
     <Compile Include="Models\MonthlyRevenue.cs" />
     <Compile Include="Models\StockArticle.cs" />
@@ -193,6 +196,7 @@
     <Content Include="Views\Volume\Index.cshtml" />
     <Content Include="Views\MarketCap\TestTPExAPI.cshtml" />
     <Content Include="Views\MarketCap\Index.cshtml" />
+    <Content Include="Views\Etf00919\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

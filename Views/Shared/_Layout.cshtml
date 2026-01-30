@@ -39,6 +39,8 @@
                         <div class="dropdown-menu" aria-labelledby="queryDropdown">
                             @Html.ActionLink("個股交易量", "Index", "Volume", new { area = "" }, new { @class = "dropdown-item" })
                             @Html.ActionLink("市值排行", "Index", "MarketCap", new { area = "" }, new { @class = "dropdown-item" })
+                            <div class="dropdown-divider"></div>
+                            @Html.ActionLink("市值+ROE排行", "Index", "Etf00919", new { area = "" }, new { @class = "dropdown-item" })
                         </div>
                     </li>
                 </ul>
