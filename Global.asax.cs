@@ -1,3 +1,4 @@
+using MvcWebCrawler.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,17 @@ namespace StockWebCrawler
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // 啟動 ROE 背景蒐集服務
+            RoeServiceManager.Start();
+            System.Diagnostics.Debug.WriteLine("[Application] ROE Collection Service started");
+        }
+
+        protected void Application_End()
+        {
+            // 停止 ROE 背景蒐集服務
+            RoeServiceManager.Stop();
+            System.Diagnostics.Debug.WriteLine("[Application] ROE Collection Service stopped");
         }
     }
 }

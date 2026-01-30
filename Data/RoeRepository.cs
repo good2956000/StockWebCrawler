@@ -160,7 +160,7 @@ namespace MvcWebCrawler.Data
         }
 
         /// <summary>
-        /// 清除所有 ROE 快取
+        /// 清除所有 ROE 快取並重新建立空檔案
         /// </summary>
         public bool ClearAllCache()
         {
@@ -168,11 +168,13 @@ namespace MvcWebCrawler.Data
             {
                 lock (_lockObject)
                 {
-                    if (File.Exists(_filePath))
-                    {
-                        File.Delete(_filePath);
-                        System.Diagnostics.Debug.WriteLine("Cleared all ROE cache");
-                    }
+                    // 建立空的快取字典
+                    var emptyCache = new Dictionary<string, RoeData>();
+                    
+                    // 儲存空的 JSON 檔案
+                    SaveRoeCache(emptyCache);
+                    
+                    System.Diagnostics.Debug.WriteLine("Cleared all ROE cache and created empty cache file");
                     return true;
                 }
             }
@@ -210,7 +212,7 @@ namespace MvcWebCrawler.Data
     }
 
     /// <summary>
-    /// ROE 資料模型
+    /// ROE 資料模型（支援 4 個季度）
     /// </summary>
     public class RoeData
     {
@@ -220,9 +222,44 @@ namespace MvcWebCrawler.Data
         public string StockId { get; set; }
 
         /// <summary>
-        /// 2025 Q2 ROE (%)
+        /// 第 1 季 ROE (%)
         /// </summary>
-        public string Q2_2025 { get; set; }
+        public string Q1_ROE { get; set; }
+
+        /// <summary>
+        /// 第 2 季 ROE (%)
+        /// </summary>
+        public string Q2_ROE { get; set; }
+
+        /// <summary>
+        /// 第 3 季 ROE (%)
+        /// </summary>
+        public string Q3_ROE { get; set; }
+
+        /// <summary>
+        /// 第 4 季 ROE (%)
+        /// </summary>
+        public string Q4_ROE { get; set; }
+
+        /// <summary>
+        /// 第 1 季日期
+        /// </summary>
+        public string Q1_Date { get; set; }
+
+        /// <summary>
+        /// 第 2 季日期
+        /// </summary>
+        public string Q2_Date { get; set; }
+
+        /// <summary>
+        /// 第 3 季日期
+        /// </summary>
+        public string Q3_Date { get; set; }
+
+        /// <summary>
+        /// 第 4 季日期
+        /// </summary>
+        public string Q4_Date { get; set; }
 
         /// <summary>
         /// 快取日期
@@ -230,18 +267,77 @@ namespace MvcWebCrawler.Data
         public DateTime CachedDate { get; set; }
 
         /// <summary>
-        /// 本期淨利（用於計算）
+        /// 本期淨利 Q1（用於計算）
         /// </summary>
-        public decimal NetIncome { get; set; }
+        public decimal NetIncome_Q1 { get; set; }
 
         /// <summary>
-        /// 股東權益（用於計算）
+        /// 股東權益 Q1（用於計算）
         /// </summary>
-        public decimal Equity { get; set; }
+        public decimal Equity_Q1 { get; set; }
+
+        /// <summary>
+        /// 本期淨利 Q2（用於計算）
+        /// </summary>
+        public decimal NetIncome_Q2 { get; set; }
+
+        /// <summary>
+        /// 股東權益 Q2（用於計算）
+        /// </summary>
+        public decimal Equity_Q2 { get; set; }
+
+        /// <summary>
+        /// 本期淨利 Q3（用於計算）
+        /// </summary>
+        public decimal NetIncome_Q3 { get; set; }
+
+        /// <summary>
+        /// 股東權益 Q3（用於計算）
+        /// </summary>
+        public decimal Equity_Q3 { get; set; }
+
+        /// <summary>
+        /// 本期淨利 Q4（用於計算）
+        /// </summary>
+        public decimal NetIncome_Q4 { get; set; }
+
+        /// <summary>
+        /// 股東權益 Q4（用於計算）
+        /// </summary>
+        public decimal Equity_Q4 { get; set; }
+
+        // 保留舊的欄位名稱以向下相容
+        [JsonIgnore]
+        public string Q2_2025
+        {
+            get => Q1_ROE;
+            set => Q1_ROE = value;
+        }
+
+        [JsonIgnore]
+        public string Q3_2025
+        {
+            get => Q2_ROE;
+            set => Q2_ROE = value;
+        }
+
+        [JsonIgnore]
+        public string Q4_2025
+        {
+            get => Q3_ROE;
+            set => Q3_ROE = value;
+        }
 
         public RoeData()
         {
-            Q2_2025 = "N/A";
+            Q1_ROE = "N/A";
+            Q2_ROE = "N/A";
+            Q3_ROE = "N/A";
+            Q4_ROE = "N/A";
+            Q1_Date = "";
+            Q2_Date = "";
+            Q3_Date = "";
+            Q4_Date = "";
             CachedDate = DateTime.Now;
         }
     }

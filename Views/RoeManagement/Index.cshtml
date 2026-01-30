@@ -1,0 +1,173 @@
+@{
+    ViewBag.Title = "ROE 蒐集服務管理";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MessageType"] alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">服務狀態</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 30%;">服務狀態</th>
+                        <td>
+                            @if (ViewBag.ServiceRunning)
+                            {
+                                <span class="badge badge-success badge-lg">
+                                    <i class="fas fa-check-circle"></i> 運行中
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger badge-lg">
+                                    <i class="fas fa-times-circle"></i> 已停止
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>快取數量</th>
+                        <td><strong>@ViewBag.CacheCount</strong> 檔股票</td>
+                    </tr>
+                    <tr>
+                        <th>最後更新時間</th>
+                        <td>
+                            @if (ViewBag.LastUpdate != null)
+                            {
+                                @(((DateTime)ViewBag.LastUpdate).ToString("yyyy-MM-dd HH:mm:ss"))
+                            }
+                            else
+                            {
+                                <span class="text-muted">尚無資料</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>執行週期</th>
+                        <td>每小時執行一次</td>
+                    </tr>
+                    <tr>
+                        <th>每小時 API 限制</th>
+                        <td>300 次呼叫 / 小時</td>
+                    </tr>
+                    <tr>
+                        <th>每小時處理股票數</th>
+                        <td>約 150 檔（每檔 2 個 API 呼叫）</td>
+                    </tr>
+                    <tr>
+                        <th>蒐集季度</th>
+                        <td>
+                            <span class="badge badge-info">2025 Q2 (2025-06-30)</span>
+                            <span class="badge badge-info">2025 Q3 (2025-09-30)</span>
+                            <span class="badge badge-info">2025 Q4 (2025-12-31)</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0">管理操作</h5>
+            </div>
+            <div class="card-body">
+                <h6>清除快取</h6>
+                <p class="text-muted">清除所有已儲存的 ROE 快取資料，下次執行時會重新蒐集。</p>
+                @using (Html.BeginForm("ClearCache", "RoeManagement", FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('確定要清除所有快取嗎？');">
+                        <i class="fas fa-trash"></i> 清除快取
+                    </button>
+                }
+
+                <hr />
+
+                <h6>重啟服務</h6>
+                <p class="text-muted">重新啟動背景蒐集服務。</p>
+                @using (Html.BeginForm("RestartService", "RoeManagement", FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-info">
+                        <i class="fas fa-sync"></i> 重啟服務
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">服務說明</h5>
+            </div>
+            <div class="card-body">
+                <h6>運作方式：</h6>
+                <ul>
+                    <li>每小時自動執行一次</li>
+                    <li>只蒐集尚未有快取的股票</li>
+                    <li>每小時最多處理 150 檔股票</li>
+                    <li>每個 API 呼叫間隔 12 秒</li>
+                    <li>自動儲存到 App_Data/roe_cache.json</li>
+                </ul>
+
+                <h6>蒐集進度：</h6>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: @(ViewBag.CacheCount > 0 ? Math.Min(100, (ViewBag.CacheCount / 1700.0) * 100) : 0)%" 
+                         aria-valuenow="@ViewBag.CacheCount" aria-valuemin="0" aria-valuemax="1700">
+                        @ViewBag.CacheCount / ~1700
+                    </div>
+                </div>
+                <small class="text-muted">預估約需 12 小時完成全部股票蒐集</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">快速連結</h5>
+            </div>
+            <div class="card-body">
+                @Html.ActionLink("市值+ROE 排行", "Index", "Etf00919", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("返回首頁", "Index", "Home", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .badge-lg {
+            font-size: 1.2em;
+            padding: 0.6em 1em;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+        }
+    </style>
+}

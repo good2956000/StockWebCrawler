@@ -1,5 +1,6 @@
 using MvcWebCrawler.Models;
 using MvcWebCrawler.Data;
+using MvcWebCrawler.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace MvcWebCrawler.Controllers
                     
                     System.Diagnostics.Debug.WriteLine($"Loaded {twsePriceArray.Count} TWSE stocks price data");
 
-                    // 處理上市股票
+                    // 處理上市股票（先不計算 ROE）
                     foreach (var item in twsePriceArray)
                     {
                         string stockId = item["Code"]?.ToString()?.Trim() ?? "";
@@ -84,9 +85,6 @@ namespace MvcWebCrawler.Controllers
                         {
                             decimal shares = twseSharesDict[stockId];
                             decimal marketValue = (closePrice * shares) / 100000000m;
-                            
-                            // 取得 2025 Q2 ROE（使用快取）
-                            var roeData = await GetStockRoeWithCacheAsync(client, stockId);
                             
                             var etfStock = new Etf00919
                             {
@@ -99,8 +97,8 @@ namespace MvcWebCrawler.Controllers
                                 Volume = item["TradeVolume"]?.ToString() ?? "0",
                                 Market = "上市",
                                 Industry = "",
-                                RoeQuarters = new List<string> { roeData.Q2_2025, "N/A", "N/A", "N/A" },
-                                AverageRoe = roeData.Q2_2025,
+                                RoeQuarters = new List<string> { "N/A", "N/A", "N/A", "N/A" },
+                                AverageRoe = "N/A",
                                 UpdateDate = DateTime.Now.ToString("yyyy-MM-dd")
                             };
                             
@@ -140,7 +138,7 @@ namespace MvcWebCrawler.Controllers
                         
                         System.Diagnostics.Debug.WriteLine($"Loaded {tpexPriceArray.Count} TPEx stocks price data");
 
-                        // 處理上櫃股票
+                        // 處理上櫃股票（先不計算 ROE）
                         int tpexAddedCount = 0;
                         foreach (var item in tpexPriceArray)
                         {
@@ -161,9 +159,6 @@ namespace MvcWebCrawler.Controllers
                                 
                                 string volumeStr = item["TradingShares"]?.ToString() ?? "0";
                                 
-                                // 取得 2025 Q2 ROE（使用快取）
-                                var roeData = await GetStockRoeWithCacheAsync(client, stockId);
-                                
                                 var etfStock = new Etf00919
                                 {
                                     StockId = stockId,
@@ -175,8 +170,8 @@ namespace MvcWebCrawler.Controllers
                                     Volume = volumeStr,
                                     Market = "上櫃",
                                     Industry = "",
-                                    RoeQuarters = new List<string> { roeData.Q2_2025, "N/A", "N/A", "N/A" },
-                                    AverageRoe = roeData.Q2_2025,
+                                    RoeQuarters = new List<string> { "N/A", "N/A", "N/A", "N/A" },
+                                    AverageRoe = "N/A",
                                     UpdateDate = DateTime.Now.ToString("yyyy-MM-dd")
                                 };
                                 
@@ -203,14 +198,31 @@ namespace MvcWebCrawler.Controllers
                         result = result.Where(x => x.Market == "上櫃").ToList();
                     }
 
+                    // 先按市值排序並取前 N 名
                     result = result
                         .OrderByDescending(x => decimal.TryParse(x.MarketValue, out decimal val) ? val : 0)
                         .Take(topN)
                         .ToList();
 
+                    System.Diagnostics.Debug.WriteLine($"Top {topN} stocks selected. Now calculating ROE...");
+
+                    // ==================== 只對前 N 名人計算 ROE ====================
                     for (int i = 0; i < result.Count; i++)
                     {
                         result[i].Rank = i + 1;
+                        
+                        // 取得 ROE（使用快取）
+                        System.Diagnostics.Debug.WriteLine($"Calculating ROE for rank {i + 1}: {result[i].StockId} {result[i].StockName}");
+                        var roeData = await GetStockRoeWithCacheAsync(client, result[i].StockId);
+                        
+                        result[i].RoeQuarters = new List<string> 
+                        { 
+                            roeData.Q1_ROE ?? "N/A", 
+                            roeData.Q2_ROE ?? "N/A", 
+                            roeData.Q3_ROE ?? "N/A", 
+                            roeData.Q4_ROE ?? "N/A" 
+                        };
+                        result[i].AverageRoe = roeData.Q1_ROE ?? "N/A"; // 使用最新季度的 ROE
                     }
 
                     System.Diagnostics.Debug.WriteLine($"Market cap ranking completed. Final result: {result.Count} stocks (topN={topN})");
@@ -243,8 +255,9 @@ namespace MvcWebCrawler.Controllers
             System.Diagnostics.Debug.WriteLine($"[CACHE MISS] Fetching ROE from API for {stockId}");
             var roeData = await GetStockRoeFromApiAsync(client, stockId);
 
-            // 3. 儲存到快取
-            if (roeData.Q2_2025 != "N/A")
+            // 3. 儲存到快取（只要有任何一個季度的資料就儲存）
+            if (roeData.Q1_ROE != "N/A" || roeData.Q2_ROE != "N/A" || 
+                roeData.Q3_ROE != "N/A" || roeData.Q4_ROE != "N/A")
             {
                 _roeRepository.SaveRoe(stockId, roeData);
             }
@@ -252,142 +265,106 @@ namespace MvcWebCrawler.Controllers
             return roeData;
         }
 
-        // 從 API 取得股票 2025 Q2 ROE
+        // 從 API 取得股票 ROE (使用近兩季股東權益平均，根據當前時間自動計算 4 個季度)
         private async Task<RoeData> GetStockRoeFromApiAsync(HttpClient client, string stockId)
         {
             var roeData = new RoeData
             {
-                StockId = stockId,
-                Q2_2025 = "N/A",
-                NetIncome = 0,
-                Equity = 0
+                StockId = stockId
             };
 
             try
             {
-                // 固定查詢 2025 Q2 (2025-06-30)
-                string targetDate = "2025-06-30";
+                // 取得往回推算的 4 個季度
+                var quarters = QuarterHelper.GetLast4QuartersEndDates();
                 
                 System.Diagnostics.Debug.WriteLine($"========================================");
                 System.Diagnostics.Debug.WriteLine($"Fetching ROE for stock: {stockId}");
-                System.Diagnostics.Debug.WriteLine($"Target date: {targetDate}");
-                
-                decimal netIncome = 0;
-                decimal equity = 0;
+                System.Diagnostics.Debug.WriteLine($"Calculating 4 quarters ROE...");
 
-                // 取得損益表資料（本期淨利）- 使用 token 參數
-                string incomeApiUrl = $"https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockFinancialStatements&data_id={stockId}&start_date={targetDate}&end_date={targetDate}&token={FINMIND_API_KEY}";
-                System.Diagnostics.Debug.WriteLine($"Income API URL: {incomeApiUrl}");
-                
-                var incomeResponse = await client.GetStringAsync(incomeApiUrl);
-                var incomeJson = JObject.Parse(incomeResponse);
-
-                System.Diagnostics.Debug.WriteLine($"Income API Status: {incomeJson["status"]?.ToString()}");
-                System.Diagnostics.Debug.WriteLine($"Income API Message: {incomeJson["msg"]?.ToString()}");
-                
-                if (incomeJson["status"]?.ToString() == "200" && incomeJson["data"] != null)
+                // 逐一計算 4 個季度的 ROE
+                for (int i = 0; i < quarters.Length; i++)
                 {
-                    var dataArray = incomeJson["data"] as JArray;
-                    System.Diagnostics.Debug.WriteLine($"Income data count: {dataArray?.Count ?? 0}");
-                    
-                    if (dataArray != null && dataArray.Count > 0)
+                    var currentQuarter = quarters[i];
+                    var currentQuarterDate = QuarterHelper.ToApiDateString(currentQuarter);
+                    var currentQuarterLabel = QuarterHelper.GetQuarterLabel(currentQuarter);
+                    var quarterNumber = QuarterHelper.GetQuarterNumber(currentQuarter);
+
+                    // 需要上一季的權益來計算平均
+                    DateTime previousQuarter;
+                    if (i < quarters.Length - 1)
                     {
-                        // 顯示所有可用的資料
-                        System.Diagnostics.Debug.WriteLine($"Available income data for {stockId}:");
-                        foreach (var item in dataArray)
-                        {
-                            string date = item["date"]?.ToString() ?? "";
-                            string type = item["type"]?.ToString() ?? "";
-                            string valueStr = item["value"]?.ToString() ?? "0";
-                            System.Diagnostics.Debug.WriteLine($"  Date: {date}, Type: {type}, Value: {valueStr}");
-                            
-                            // 本期淨利
-                            if (date == targetDate && (type == "稅後淨利" || type == "本期淨利" || type == "net_income"))
-                            {
-                                if (decimal.TryParse(valueStr, out decimal income))
-                                {
-                                    netIncome = income;
-                                    System.Diagnostics.Debug.WriteLine($"??? FOUND NET INCOME for {stockId}: {income:N2}");
-                                    break;
-                                }
-                            }
-                        }
+                        previousQuarter = quarters[i + 1]; // 使用數組中的下一個（更早的季度）
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"??? NO income data returned for {stockId}");
+                        previousQuarter = QuarterHelper.GetPreviousQuarterEndDate(currentQuarter);
                     }
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"??? Income API failed for {stockId}");
-                }
-
-                // 取得資產負債表資料（股東權益）- 使用 token 參數
-                string equityApiUrl = $"https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockBalanceSheet&data_id={stockId}&start_date={targetDate}&end_date={targetDate}&token={FINMIND_API_KEY}";
-                System.Diagnostics.Debug.WriteLine($"Equity API URL: {equityApiUrl}");
-                
-                var equityResponse = await client.GetStringAsync(equityApiUrl);
-                var equityJson = JObject.Parse(equityResponse);
-
-                System.Diagnostics.Debug.WriteLine($"Equity API Status: {equityJson["status"]?.ToString()}");
-                System.Diagnostics.Debug.WriteLine($"Equity API Message: {equityJson["msg"]?.ToString()}");
-                
-                if (equityJson["status"]?.ToString() == "200" && equityJson["data"] != null)
-                {
-                    var dataArray = equityJson["data"] as JArray;
-                    System.Diagnostics.Debug.WriteLine($"Equity data count: {dataArray?.Count ?? 0}");
                     
-                    if (dataArray != null && dataArray.Count > 0)
+                    var previousQuarterDate = QuarterHelper.ToApiDateString(previousQuarter);
+                    var previousQuarterLabel = QuarterHelper.GetQuarterLabel(previousQuarter);
+
+                    System.Diagnostics.Debug.WriteLine($"Quarter {i + 1}: {currentQuarterLabel}");
+                    System.Diagnostics.Debug.WriteLine($"  Current: {currentQuarterDate}");
+                    System.Diagnostics.Debug.WriteLine($"  Previous: {previousQuarterDate}");
+
+                    try
                     {
-                        // 顯示所有可用的資料
-                        System.Diagnostics.Debug.WriteLine($"Available equity data for {stockId}:");
-                        foreach (var item in dataArray)
+                        // 取得當季稅後淨利
+                        decimal netIncome = await FetchNetIncomeAsync(client, stockId, currentQuarterDate);
+                        
+                        // 取得當季股東權益
+                        decimal currentEquity = await FetchEquityAsync(client, stockId, currentQuarterDate);
+                        
+                        // 取得上一季股東權益
+                        decimal previousEquity = await FetchEquityAsync(client, stockId, previousQuarterDate);
+
+                        // 計算 ROE（使用近兩季股東權益平均）
+                        if (netIncome != 0 && currentEquity > 0 && previousEquity > 0)
                         {
-                            string date = item["date"]?.ToString() ?? "";
-                            string type = item["type"]?.ToString() ?? "";
-                            string valueStr = item["value"]?.ToString() ?? "0";
-                            System.Diagnostics.Debug.WriteLine($"  Date: {date}, Type: {type}, Value: {valueStr}");
-                            
-                            // 股東權益
-                            if (date == targetDate && (type == "權益總額" || type == "股東權益" || type == "equity"))
+                            decimal averageEquity = (currentEquity + previousEquity) / 2;
+                            decimal roe = (netIncome / averageEquity) * 100;
+
+                            // 根據實際的季度編號儲存到對應的欄位
+                            switch (quarterNumber)
                             {
-                                if (decimal.TryParse(valueStr, out decimal eq))
-                                {
-                                    equity = eq;
-                                    System.Diagnostics.Debug.WriteLine($"??? FOUND EQUITY for {stockId}: {eq:N2}");
+                                case 1: // Q1 (03-31)
+                                    roeData.Q1_ROE = roe.ToString("F2");
+                                    roeData.Q1_Date = currentQuarterDate;
+                                    roeData.NetIncome_Q1 = netIncome;
+                                    roeData.Equity_Q1 = averageEquity;
                                     break;
-                                }
+                                case 2: // Q2 (06-30)
+                                    roeData.Q2_ROE = roe.ToString("F2");
+                                    roeData.Q2_Date = currentQuarterDate;
+                                    roeData.NetIncome_Q2 = netIncome;
+                                    roeData.Equity_Q2 = averageEquity;
+                                    break;
+                                case 3: // Q3 (09-30)
+                                    roeData.Q3_ROE = roe.ToString("F2");
+                                    roeData.Q3_Date = currentQuarterDate;
+                                    roeData.NetIncome_Q3 = netIncome;
+                                    roeData.Equity_Q3 = averageEquity;
+                                    break;
+                                case 4: // Q4 (12-31)
+                                    roeData.Q4_ROE = roe.ToString("F2");
+                                    roeData.Q4_Date = currentQuarterDate;
+                                    roeData.NetIncome_Q4 = netIncome;
+                                    roeData.Equity_Q4 = averageEquity;
+                                    break;
                             }
+
+                            System.Diagnostics.Debug.WriteLine($"  ? ROE: {roe:F2}%");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"  ? Cannot calculate ROE");
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"??? NO equity data returned for {stockId}");
+                        System.Diagnostics.Debug.WriteLine($"  ? Error: {ex.Message}");
                     }
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"??? Equity API failed for {stockId}");
-                }
-
-                // 計算 ROE
-                System.Diagnostics.Debug.WriteLine($"Final values for {stockId}:");
-                System.Diagnostics.Debug.WriteLine($"  Net Income: {netIncome:N2}");
-                System.Diagnostics.Debug.WriteLine($"  Equity: {equity:N2}");
-                
-                if (netIncome != 0 && equity > 0)
-                {
-                    decimal roe = (netIncome / equity) * 100;
-                    roeData.Q2_2025 = roe.ToString("F2");
-                    roeData.NetIncome = netIncome;
-                    roeData.Equity = equity;
-                    System.Diagnostics.Debug.WriteLine($"??? CALCULATED ROE for {stockId}: {roe:F2}%");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"??? CANNOT CALCULATE ROE for {stockId}");
-                    System.Diagnostics.Debug.WriteLine($"    Reason: NetIncome={netIncome}, Equity={equity}");
                 }
                 
                 System.Diagnostics.Debug.WriteLine($"========================================");
@@ -399,6 +376,90 @@ namespace MvcWebCrawler.Controllers
             }
 
             return roeData;
+        }
+
+        // 取得稅後淨利
+        private async Task<decimal> FetchNetIncomeAsync(HttpClient client, string stockId, string targetDate)
+        {
+            decimal netIncome = 0;
+
+            try
+            {
+                string incomeApiUrl = $"https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockFinancialStatements&data_id={stockId}&start_date={targetDate}&end_date={targetDate}&token={FINMIND_API_KEY}";
+                var incomeResponse = await client.GetStringAsync(incomeApiUrl);
+                var incomeJson = JObject.Parse(incomeResponse);
+
+                if (incomeJson["status"]?.ToString() == "200" && incomeJson["data"] != null)
+                {
+                    var dataArray = incomeJson["data"] as JArray;
+                    if (dataArray != null && dataArray.Count > 0)
+                    {
+                        foreach (var item in dataArray)
+                        {
+                            string date = item["date"]?.ToString() ?? "";
+                            string type = item["type"]?.ToString() ?? "";
+                            string valueStr = item["value"]?.ToString() ?? "0";
+
+                            if (date == targetDate && type == "IncomeAfterTaxes")
+                            {
+                                if (decimal.TryParse(valueStr, out decimal income))
+                                {
+                                    netIncome = income;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error fetching net income: {ex.Message}");
+            }
+
+            return netIncome;
+        }
+
+        // 取得股東權益
+        private async Task<decimal> FetchEquityAsync(HttpClient client, string stockId, string targetDate)
+        {
+            decimal equity = 0;
+
+            try
+            {
+                string equityApiUrl = $"https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockBalanceSheet&data_id={stockId}&start_date={targetDate}&end_date={targetDate}&token={FINMIND_API_KEY}";
+                var equityResponse = await client.GetStringAsync(equityApiUrl);
+                var equityJson = JObject.Parse(equityResponse);
+
+                if (equityJson["status"]?.ToString() == "200" && equityJson["data"] != null)
+                {
+                    var dataArray = equityJson["data"] as JArray;
+                    if (dataArray != null && dataArray.Count > 0)
+                    {
+                        foreach (var item in dataArray)
+                        {
+                            string date = item["date"]?.ToString() ?? "";
+                            string type = item["type"]?.ToString() ?? "";
+                            string valueStr = item["value"]?.ToString() ?? "0";
+
+                            if (date == targetDate && type == "Equity")
+                            {
+                                if (decimal.TryParse(valueStr, out decimal eq))
+                                {
+                                    equity = eq;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error fetching equity: {ex.Message}");
+            }
+
+            return equity;
         }
 
         // 格式化市值（億元）

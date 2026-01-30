@@ -1,0 +1,313 @@
+@model MvcWebCrawler.Controllers.SingleRoeTestResult
+
+@{
+    ViewBag.Title = "單一股票 ROE 測試（近兩季平均）";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">測試股票</h4>
+            </div>
+            <div class="card-body">
+                <form method="get" class="form-inline">
+                    <label for="stockId" class="mr-2">股票代號：</label>
+                    <input type="text" name="stockId" id="stockId" class="form-control mr-2" value="@ViewBag.StockId" />
+                    <button type="submit" class="btn btn-primary">開始測試</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        <h4>錯誤</h4>
+        <p>@ViewBag.Error</p>
+        <pre>@ViewBag.StackTrace</pre>
+    </div>
+}
+
+@if (Model != null && !string.IsNullOrEmpty(Model.StockId))
+{
+    <div class="alert alert-info">
+        <strong>測試時間：</strong> @Model.TestTime.ToString("yyyy-MM-dd HH:mm:ss")<br />
+        <strong>股票代號：</strong> @Model.StockId<br />
+        <strong>當季：</strong> @Model.CurrentQuarterDate (@Model.CurrentQuarterLabel)<br />
+        <strong>上一季：</strong> @Model.PreviousQuarterDate (@Model.PreviousQuarterLabel)
+    </div>
+
+    <!-- Step 1: 稅後淨利 -->
+    <div class="card mb-3">
+        <div class="card-header @(Model.Step1_Success ? "bg-success" : "bg-danger") text-white">
+            <h5 class="mb-0">
+                @(Model.Step1_Success ? "?" : "?") @Model.Step1_Description
+            </h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 200px;">API URL</th>
+                    <td style="word-break: break-all; font-size: 0.9em;">@Model.IncomeApiUrl</td>
+                </tr>
+                <tr>
+                    <th>API Status</th>
+                    <td>
+                        @if (Model.IncomeApiStatus == "200")
+                        {
+                            <span class="badge badge-success badge-lg">@Model.IncomeApiStatus</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger badge-lg">@Model.IncomeApiStatus</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>資料筆數</th>
+                    <td>@Model.IncomeDataCount 筆</td>
+                </tr>
+                <tr>
+                    <th>稅後淨利 (IncomeAfterTaxes)</th>
+                    <td>
+                        @if (Model.Step1_Success)
+                        {
+                            <strong class="text-success" style="font-size: 1.2em;">@Model.NetIncome.ToString("N2")</strong>
+                        }
+                        else
+                        {
+                            <span class="text-danger">未找到</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Step 2: 當季股東權益 -->
+    <div class="card mb-3">
+        <div class="card-header @(Model.Step2_Success ? "bg-success" : "bg-danger") text-white">
+            <h5 class="mb-0">
+                @(Model.Step2_Success ? "?" : "?") @Model.Step2_Description
+            </h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 200px;">API URL</th>
+                    <td style="word-break: break-all; font-size: 0.9em;">@Model.CurrentEquityApiUrl</td>
+                </tr>
+                <tr>
+                    <th>API Status</th>
+                    <td>
+                        @if (Model.CurrentEquityApiStatus == "200")
+                        {
+                            <span class="badge badge-success badge-lg">@Model.CurrentEquityApiStatus</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger badge-lg">@Model.CurrentEquityApiStatus</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>資料筆數</th>
+                    <td>@Model.CurrentEquityDataCount 筆</td>
+                </tr>
+                <tr>
+                    <th>當季股東權益 (Equity) - @Model.CurrentQuarterLabel</th>
+                    <td>
+                        @if (Model.Step2_Success)
+                        {
+                            <strong class="text-success" style="font-size: 1.2em;">@Model.CurrentEquity.ToString("N2")</strong>
+                        }
+                        else
+                        {
+                            <span class="text-danger">未找到</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Step 3: 上一季股東權益 -->
+    <div class="card mb-3">
+        <div class="card-header @(Model.Step3_Success ? "bg-success" : "bg-danger") text-white">
+            <h5 class="mb-0">
+                @(Model.Step3_Success ? "?" : "?") @Model.Step3_Description
+            </h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 200px;">API URL</th>
+                    <td style="word-break: break-all; font-size: 0.9em;">@Model.PreviousEquityApiUrl</td>
+                </tr>
+                <tr>
+                    <th>API Status</th>
+                    <td>
+                        @if (Model.PreviousEquityApiStatus == "200")
+                        {
+                            <span class="badge badge-success badge-lg">@Model.PreviousEquityApiStatus</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger badge-lg">@Model.PreviousEquityApiStatus</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>資料筆數</th>
+                    <td>@Model.PreviousEquityDataCount 筆</td>
+                </tr>
+                <tr>
+                    <th>上一季股東權益 (Equity) - @Model.PreviousQuarterLabel</th>
+                    <td>
+                        @if (Model.Step3_Success)
+                        {
+                            <strong class="text-success" style="font-size: 1.2em;">@Model.PreviousEquity.ToString("N2")</strong>
+                        }
+                        else
+                        {
+                            <span class="text-danger">未找到</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Step 4: 計算 ROE -->
+    <div class="card mb-3">
+        <div class="card-header @(Model.Step4_Success ? "bg-success" : "bg-warning") text-white">
+            <h5 class="mb-0">
+                @(Model.Step4_Success ? "?" : "?") @Model.Step4_Description
+            </h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Step4_Success)
+            {
+                <div class="alert alert-success">
+                    <h4 class="alert-heading">? ROE 計算成功！</h4>
+                    <hr />
+                    <h5>計算步驟：</h5>
+                    <ol>
+                        <li>
+                            <strong>近兩季股東權益平均</strong><br />
+                            = (當季權益 + 上一季權益) / 2<br />
+                            = (@Model.CurrentEquity.ToString("N2") + @Model.PreviousEquity.ToString("N2")) / 2<br />
+                            = <strong class="text-primary">@Model.AverageEquity.ToString("N2")</strong>
+                        </li>
+                        <li class="mt-3">
+                            <strong>ROE 計算</strong><br />
+                            = 稅後淨利 / 近兩季權益平均 × 100%<br />
+                            = @Model.NetIncome.ToString("N2") / @Model.AverageEquity.ToString("N2") × 100%<br />
+                            = <strong class="text-success" style="font-size: 1.5em;">@Model.Roe.ToString("F2")%</strong>
+                        </li>
+                    </ol>
+                </div>
+
+                <table class="table table-bordered table-striped mt-3">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>項目</th>
+                            <th class="text-right">數值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>稅後淨利 (@Model.CurrentQuarterLabel)</td>
+                            <td class="text-right">@Model.NetIncome.ToString("N2")</td>
+                        </tr>
+                        <tr>
+                            <td>當季股東權益 (@Model.CurrentQuarterLabel)</td>
+                            <td class="text-right">@Model.CurrentEquity.ToString("N2")</td>
+                        </tr>
+                        <tr>
+                            <td>上一季股東權益 (@Model.PreviousQuarterLabel)</td>
+                            <td class="text-right">@Model.PreviousEquity.ToString("N2")</td>
+                        </tr>
+                        <tr class="table-info">
+                            <td><strong>近兩季股東權益平均</strong></td>
+                            <td class="text-right"><strong>@Model.AverageEquity.ToString("N2")</strong></td>
+                        </tr>
+                        <tr class="table-success">
+                            <td><strong>ROE (單季年化)</strong></td>
+                            <td class="text-right"><strong style="font-size: 1.3em;">@Model.Roe.ToString("F2")%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <h5>? 無法計算 ROE</h5>
+                    <p>原因：缺少必要的資料</p>
+                    <ul>
+                        <li>稅後淨利：@(Model.Step1_Success ? "? 已取得" : "? 未取得")</li>
+                        <li>當季股東權益：@(Model.Step2_Success ? "? 已取得" : "? 未取得")</li>
+                        <li>上一季股東權益：@(Model.Step3_Success ? "? 已取得" : "? 未取得")</li>
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- 測試結果總結 -->
+    if (Model.AllSuccess)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">?? 測試成功！</h4>
+            <p>所有步驟都已成功完成，ROE 計算結果為：<strong>@Model.Roe.ToString("F2")%</strong></p>
+            <hr />
+            <p class="mb-0">
+                <small>
+                    計算公式：單季 ROE = 單季稅後淨利 / 近兩季股東權益平均 × 100%
+                </small>
+            </p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+}
+
+<div class="card mt-4">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">說明</h5>
+    </div>
+    <div class="card-body">
+        <h6>ROE 計算公式（近兩季平均法）：</h6>
+        <div class="bg-light p-3 rounded">
+            <strong>單季 ROE = 單季稅後淨利 / 近兩季股東權益平均 × 100%</strong>
+        </div>
+        <p class="mt-3">範例：</p>
+        <ul>
+            <li>2024 Q3 稅後淨利：250,000,000,000</li>
+            <li>2024 Q3 股東權益：2,500,000,000,000</li>
+            <li>2024 Q2 股東權益：2,400,000,000,000</li>
+            <li>近兩季權益平均 = (2,500,000,000,000 + 2,400,000,000,000) / 2 = 2,450,000,000,000</li>
+            <li>ROE = (250,000,000,000 / 2,450,000,000,000) × 100% = 10.20%</li>
+        </ul>
+    </div>
+</div>
+
+@section scripts {
+    <style>
+        .badge-lg {
+            font-size: 1.1em;
+            padding: 0.5em 1em;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .table th {
+            background-color: #f8f9fa;
+        }
+    </style>
+}
