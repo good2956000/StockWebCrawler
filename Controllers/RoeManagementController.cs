@@ -32,9 +32,22 @@ namespace MvcWebCrawler.Controllers
         {
             try
             {
+                // 1. 先停止服務
+                System.Diagnostics.Debug.WriteLine("[ROE Management] Stopping service before clearing cache...");
+                RoeServiceManager.Stop();
+                System.Threading.Thread.Sleep(1000); // 等待服務完全停止
+                
+                // 2. 清除快取
+                System.Diagnostics.Debug.WriteLine("[ROE Management] Clearing cache...");
                 _roeRepository.ClearAllCache();
-                System.Diagnostics.Debug.WriteLine("[ROE Management] Cache cleared successfully");
-                TempData["Message"] = "快取已清除成功！";
+                
+                // 3. 重新啟動服務（這樣會重頭開始抓取）
+                System.Diagnostics.Debug.WriteLine("[ROE Management] Restarting service...");
+                System.Threading.Thread.Sleep(500);
+                RoeServiceManager.Start();
+                
+                System.Diagnostics.Debug.WriteLine("[ROE Management] Cache cleared and service restarted successfully");
+                TempData["Message"] = "快取已清除成功！服務已重啟，將重頭開始抓取資料。";
                 TempData["MessageType"] = "success";
             }
             catch (Exception ex)

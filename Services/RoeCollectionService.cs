@@ -107,7 +107,7 @@ namespace MvcWebCrawler.Services
                     var stockList = await GetAllStockIdsAsync(client);
                     System.Diagnostics.Debug.WriteLine($"[ROE Service] Total stocks to process: {stockList.Count}");
 
-                    // 篩選出尚未有快取的股票
+                    // 篩選出尚未有快取的股票（這樣清除快取後會重頭開始）
                     var stocksToProcess = new List<string>();
                     foreach (var stockId in stockList)
                     {
@@ -118,6 +118,7 @@ namespace MvcWebCrawler.Services
                     }
 
                     System.Diagnostics.Debug.WriteLine($"[ROE Service] Stocks without cache: {stocksToProcess.Count}");
+                    System.Diagnostics.Debug.WriteLine($"[ROE Service] Stocks with cache: {stockList.Count - stocksToProcess.Count}");
                     
                     // 每檔股票需要 12 次 API 呼叫（4個季度 × 3次）
                     // API 限制：300 次/小時

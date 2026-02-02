@@ -27,7 +27,7 @@
                         <td>
                             @if (ViewBag.ServiceRunning)
                             {
-                                <span class="badge badge-success badge-lg">
+                                <span class="badge badge-success badge-lg" style="background-color: #28a745; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
                                     <i class="fas fa-check-circle"></i> 運行中
                                 </span>
                             }
@@ -66,14 +66,15 @@
                     </tr>
                     <tr>
                         <th>每小時處理股票數</th>
-                        <td>約 150 檔（每檔 2 個 API 呼叫）</td>
+                        <td>約 25 檔（每檔 12 個 API 呼叫，4個季度）</td>
                     </tr>
                     <tr>
                         <th>蒐集季度</th>
                         <td>
-                            <span class="badge badge-info">2025 Q2 (2025-06-30)</span>
-                            <span class="badge badge-info">2025 Q3 (2025-09-30)</span>
-                            <span class="badge badge-info">2025 Q4 (2025-12-31)</span>
+                            <span class="badge badge-dark" style="background-color: #343a40; color: #ffffff;">2025 Q1 (2025-03-31)</span>
+                            <span class="badge badge-dark" style="background-color: #343a40; color: #ffffff;">2025 Q2 (2025-06-30)</span>
+                            <span class="badge badge-dark" style="background-color: #343a40; color: #ffffff;">2025 Q3 (2025-09-30)</span>
+                            <span class="badge badge-dark" style="background-color: #343a40; color: #ffffff;">2025 Q4 (2024-12-31)</span>
                         </td>
                     </tr>
                 </table>
@@ -90,11 +91,11 @@
             </div>
             <div class="card-body">
                 <h6>清除快取</h6>
-                <p class="text-muted">清除所有已儲存的 ROE 快取資料，下次執行時會重新蒐集。</p>
+                <p class="text-muted">清除所有已儲存的 ROE 快取資料，服務會自動重啟並重頭開始抓取。</p>
                 @using (Html.BeginForm("ClearCache", "RoeManagement", FormMethod.Post))
                 {
-                    <button type="submit" class="btn btn-warning" onclick="return confirm('確定要清除所有快取嗎？');">
-                        <i class="fas fa-trash"></i> 清除快取
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('確定要清除所有快取嗎？\n\n服務將重新啟動並從頭開始抓取所有股票資料。');">
+                        <i class="fas fa-trash"></i> 清除快取並重啟
                     </button>
                 }
 
@@ -122,8 +123,8 @@
                 <ul>
                     <li>每小時自動執行一次</li>
                     <li>只蒐集尚未有快取的股票</li>
-                    <li>每小時最多處理 150 檔股票</li>
-                    <li>每個 API 呼叫間隔 12 秒</li>
+                    <li>每小時最多處理 25 檔股票</li>
+                    <li>每檔股票需要 12 個 API 呼叫（4個季度 × 3次）</li>
                     <li>自動儲存到 App_Data/roe_cache.json</li>
                 </ul>
 
@@ -135,7 +136,7 @@
                         @ViewBag.CacheCount / ~1700
                     </div>
                 </div>
-                <small class="text-muted">預估約需 12 小時完成全部股票蒐集</small>
+                <small class="text-muted">預估約需 68 小時完成全部股票蒐集（1700 ÷ 25 = 68 小時）</small>
             </div>
         </div>
     </div>
