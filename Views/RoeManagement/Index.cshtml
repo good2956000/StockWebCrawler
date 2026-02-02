@@ -14,6 +14,15 @@
     </div>
 }
 
+<div class="refresh-info">
+    <i class="fas fa-sync-alt"></i>
+    <strong>自動刷新：</strong>
+    頁面將在 <span id="nextRefresh">5 分 00 秒</span> 後自動刷新
+    <button id="manualRefresh" class="btn btn-sm btn-outline-primary ml-3">
+        <i class="fas fa-redo"></i> 立即刷新
+    </button>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -58,7 +67,28 @@
                     </tr>
                     <tr>
                         <th>執行週期</th>
-                        <td>每小時執行一次</td>
+                        <td>
+                            每小時執行一次
+                            @if (ViewBag.NextExecutionTime != null)
+                            {
+                                <br />
+                                <small class="text-muted">
+                                    下次執行時間：@(((DateTime)ViewBag.NextExecutionTime).ToString("yyyy-MM-dd HH:mm:ss"))
+                                </small>
+                                <br />
+                                <small>
+                                    <strong>距離下次執行：</strong>
+                                    <span id="serviceCountdown" class="text-primary font-weight-bold">計算中...</span>
+                                </small>
+                            }
+                            else
+                            {
+                                <br />
+                                <small class="text-warning">
+                                    <i class="fas fa-clock"></i> 服務剛啟動，首次執行中...
+                                </small>
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <th>每小時 API 限制</th>
@@ -157,6 +187,88 @@
 </div>
 
 @section scripts {
+    <script>
+        $(document).ready(function() {
+            // ========== 頁面自動刷新設定 ==========
+            var refreshInterval = 5 * 60 * 1000; // 5 分鐘（毫秒）
+            var pageCountdownSeconds = 5 * 60; // 5 分鐘（秒）
+            var pageCountdownTimer;
+            var refreshTimer;
+
+            // 更新頁面刷新倒數計時顯示
+            function updatePageCountdown() {
+                var minutes = Math.floor(pageCountdownSeconds / 60);
+                var seconds = pageCountdownSeconds % 60;
+                var timeString = minutes + ' 分 ' + (seconds < 10 ? '0' : '') + seconds + ' 秒';
+                $('#nextRefresh').text(timeString);
+                
+                pageCountdownSeconds--;
+                
+                if (pageCountdownSeconds < 0) {
+                    pageCountdownSeconds = 5 * 60;
+                }
+            }
+
+            // 手動刷新按鈕
+            $('#manualRefresh').click(function() {
+                location.reload();
+            });
+
+            // 啟動頁面刷新倒數計時（每秒更新）
+            pageCountdownTimer = setInterval(updatePageCountdown, 1000);
+            
+            // 啟動自動刷新（每 5 分鐘）
+            refreshTimer = setTimeout(function() {
+                location.reload();
+            }, refreshInterval);
+
+            // 初始化頁面刷新倒數
+            updatePageCountdown();
+
+            // ========== 背景服務執行倒數計時 ==========
+            @if (ViewBag.NextExecutionTime != null)
+            {
+                <text>
+                var nextExecutionTime = new Date('@(((DateTime)ViewBag.NextExecutionTime).ToString("yyyy-MM-dd HH:mm:ss"))');
+                var serviceCountdownTimer;
+
+                function updateServiceCountdown() {
+                    var now = new Date();
+                    var diff = nextExecutionTime - now;
+                    
+                    if (diff @Html.Raw("<=") 0) {
+                        $('#serviceCountdown').html('@Html.Raw("<span class=\"text-success\"><i class=\"fas fa-check-circle\"></i> 正在執行中...</span>")');
+                        clearInterval(serviceCountdownTimer);
+                        // 2 秒後刷新頁面以更新狀態
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                        return;
+                    }
+                    
+                    var hours = Math.floor(diff / (1000 * 60 * 60));
+                    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    var timeString = '';
+                    if (hours @Html.Raw(">") 0) {
+                        timeString += hours + ' 小時 ';
+                    }
+                    timeString += minutes + ' 分 ' + (seconds @Html.Raw("<") 10 ? '0' : '') + seconds + ' 秒';
+                    
+                    $('#serviceCountdown').text(timeString);
+                }
+
+                // 啟動背景服務倒數計時（每秒更新）
+                serviceCountdownTimer = setInterval(updateServiceCountdown, 1000);
+                
+                // 初始化背景服務倒數
+                updateServiceCountdown();
+                </text>
+            }
+        });
+    </script>
+
     <style>
         .card {
             margin-bottom: 20px;
@@ -169,6 +281,24 @@
 
         .table th {
             background-color: #f8f9fa;
+        }
+
+        .refresh-info {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .refresh-info i {
+            color: #2196F3;
+            margin-right: 8px;
+        }
+
+        #nextRefresh {
+            font-weight: bold;
+            color: #1976D2;
         }
     </style>
 }

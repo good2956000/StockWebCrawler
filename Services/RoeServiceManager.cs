@@ -9,6 +9,8 @@ namespace MvcWebCrawler.Services
     {
         private static RoeCollectionService _service;
         private static readonly object _lock = new object();
+        private static DateTime? _lastExecutionTime;
+        private static DateTime? _serviceStartTime;
 
         /// <summary>
         /// 啟動 ROE 蒐集服務
@@ -21,6 +23,7 @@ namespace MvcWebCrawler.Services
                 {
                     _service = new RoeCollectionService();
                     _service.Start();
+                    _serviceStartTime = DateTime.Now;
                     System.Diagnostics.Debug.WriteLine("[ROE Service Manager] Service started successfully");
                 }
             }
@@ -37,6 +40,8 @@ namespace MvcWebCrawler.Services
                 {
                     _service.Stop();
                     _service = null;
+                    _serviceStartTime = null;
+                    _lastExecutionTime = null;
                     System.Diagnostics.Debug.WriteLine("[ROE Service Manager] Service stopped successfully");
                 }
             }
@@ -48,6 +53,49 @@ namespace MvcWebCrawler.Services
         public static bool IsRunning
         {
             get { return _service != null; }
+        }
+
+        /// <summary>
+        /// 取得最後執行時間
+        /// </summary>
+        public static DateTime? LastExecutionTime
+        {
+            get { return _lastExecutionTime; }
+        }
+
+        /// <summary>
+        /// 取得服務啟動時間
+        /// </summary>
+        public static DateTime? ServiceStartTime
+        {
+            get { return _serviceStartTime; }
+        }
+
+        /// <summary>
+        /// 更新最後執行時間
+        /// </summary>
+        public static void UpdateLastExecutionTime()
+        {
+            _lastExecutionTime = DateTime.Now;
+        }
+
+        /// <summary>
+        /// 取得下次執行時間
+        /// </summary>
+        public static DateTime? NextExecutionTime
+        {
+            get
+            {
+                if (_lastExecutionTime.HasValue)
+                {
+                    return _lastExecutionTime.Value.AddHours(1);
+                }
+                else if (_serviceStartTime.HasValue)
+                {
+                    return _serviceStartTime.Value.AddHours(1);
+                }
+                return null;
+            }
         }
     }
 }

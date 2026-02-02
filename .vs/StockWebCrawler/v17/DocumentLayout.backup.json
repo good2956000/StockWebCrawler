@@ -7,32 +7,32 @@
       "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\roemanagement\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\roemanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\roemanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\roemanagement\\index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\roemanagement\\index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\revenue\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\revenue\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\revenue\\favorites.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\revenue\\favorites.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\marketcap\\testtpexapi.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\marketcap\\testtpexapi.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\marketcap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\marketcap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|C:\\github\\StockWebCrawler\\services\\roecollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:services\\roecollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\views\\stock\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:views\\stock\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\services\\roeservicemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:services\\roeservicemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\etf00919controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\etf00919controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\services\\roecollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:services\\roecollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|c:\\github\\stockwebcrawler\\controllers\\roemanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A550068-494C-4876-B020-3B4A4276BE72}|StockWebCrawler.csproj|solutionrelative:controllers\\roemanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 16,
           "Children": [
             {
               "$type": "Bookmark",
@@ -90,106 +90,106 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
+              "Title": "RoeManagementController.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\RoeManagementController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RoeManagementController.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\RoeManagementController.cs",
+              "RelativeToolTip": "Controllers\\RoeManagementController.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAABRwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-02T07:11:31.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RoeCollectionService.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Services\\RoeCollectionService.cs",
+              "RelativeDocumentMoniker": "Services\\RoeCollectionService.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Services\\RoeCollectionService.cs",
+              "RelativeToolTip": "Services\\RoeCollectionService.cs",
+              "ViewState": "AgIAAJ4BAAAAAAAAAIBZwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-02T07:11:12.105Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RoeServiceManager.cs",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Services\\RoeServiceManager.cs",
+              "RelativeDocumentMoniker": "Services\\RoeServiceManager.cs",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Services\\RoeServiceManager.cs",
+              "RelativeToolTip": "Services\\RoeServiceManager.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAEBVwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-02T07:10:58.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\RoeManagement\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\RoeManagement\\Index.cshtml",
               "ToolTip": "C:\\github\\StockWebCrawler\\Views\\RoeManagement\\Index.cshtml",
               "RelativeToolTip": "Views\\RoeManagement\\Index.cshtml",
-              "ViewState": "AgIAAJQAAAAAAAAAAAAvwK4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T00:31:01.177Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Revenue\\Index.cshtml",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Index.cshtml",
-              "RelativeToolTip": "Views\\Revenue\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T00:30:58.778Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Favorites.cshtml",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Favorites.cshtml",
-              "RelativeDocumentMoniker": "Views\\Revenue\\Favorites.cshtml",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Revenue\\Favorites.cshtml",
-              "RelativeToolTip": "Views\\Revenue\\Favorites.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T00:30:57.207Z",
+              "WhenOpened": "2026-02-02T06:25:00.455Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\Stock\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Stock\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\Stock\\Index.cshtml",
+              "RelativeToolTip": "Views\\Stock\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-02T00:58:53.086Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\RoeManagement\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\RoeManagement\\Index.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\RoeManagement\\Index.cshtml",
+              "RelativeToolTip": "Views\\RoeManagement\\Index.cshtml",
+              "ViewState": "AgIAAA8BAAAAAAAAAADgvykAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-02T00:58:47.528Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TestTPExAPI.cshtml",
+              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\TestTPExAPI.cshtml",
+              "RelativeDocumentMoniker": "Views\\MarketCap\\TestTPExAPI.cshtml",
+              "ToolTip": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\TestTPExAPI.cshtml",
+              "RelativeToolTip": "Views\\MarketCap\\TestTPExAPI.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-02T00:58:45.224Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\MarketCap\\Index.cshtml",
               "ToolTip": "C:\\github\\StockWebCrawler\\Views\\MarketCap\\Index.cshtml",
               "RelativeToolTip": "Views\\MarketCap\\Index.cshtml",
-              "ViewState": "AgIAABMBAAAAAAAAAAASwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAgBAAAAAAAAAAAAAAUBAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T00:30:54.378Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "RoeServiceManager.cs",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Services\\RoeServiceManager.cs",
-              "RelativeDocumentMoniker": "Services\\RoeServiceManager.cs",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Services\\RoeServiceManager.cs",
-              "RelativeToolTip": "Services\\RoeServiceManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-02T00:30:41.509Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "RoeManagementController.cs",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\RoeManagementController.cs",
-              "RelativeDocumentMoniker": "Controllers\\RoeManagementController.cs",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\RoeManagementController.cs",
-              "RelativeToolTip": "Controllers\\RoeManagementController.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAArwFcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-02T00:30:16.545Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "RoeCollectionService.cs",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Services\\RoeCollectionService.cs",
-              "RelativeDocumentMoniker": "Services\\RoeCollectionService.cs",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Services\\RoeCollectionService.cs",
-              "RelativeToolTip": "Services\\RoeCollectionService.cs",
-              "ViewState": "AgIAAHcBAAAAAAAAAAArwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-30T08:45:58.18Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Etf00919Controller.cs",
-              "DocumentMoniker": "C:\\github\\StockWebCrawler\\Controllers\\Etf00919Controller.cs",
-              "RelativeDocumentMoniker": "Controllers\\Etf00919Controller.cs",
-              "ToolTip": "C:\\github\\StockWebCrawler\\Controllers\\Etf00919Controller.cs",
-              "RelativeToolTip": "Controllers\\Etf00919Controller.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAADwvx8AAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-30T08:40:12.266Z",
+              "WhenOpened": "2026-02-02T00:58:43.57Z",
               "EditorCaption": ""
             }
           ]

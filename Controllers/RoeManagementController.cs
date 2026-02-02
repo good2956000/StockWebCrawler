@@ -22,6 +22,8 @@ namespace MvcWebCrawler.Controllers
             ViewBag.CacheCount = cacheStats.Count;
             ViewBag.LastUpdate = cacheStats.LastUpdate;
             ViewBag.ServiceRunning = RoeServiceManager.IsRunning;
+            ViewBag.NextExecutionTime = RoeServiceManager.NextExecutionTime;
+            ViewBag.LastExecutionTime = RoeServiceManager.LastExecutionTime;
 
             return View();
         }

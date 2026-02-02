@@ -74,6 +74,9 @@ namespace MvcWebCrawler.Services
 
             try
             {
+                // 更新最後執行時間
+                RoeServiceManager.UpdateLastExecutionTime();
+                
                 System.Diagnostics.Debug.WriteLine($"========================================");
                 System.Diagnostics.Debug.WriteLine($"[ROE Service] Starting batch collection at {DateTime.Now}");
                 System.Diagnostics.Debug.WriteLine($"========================================");
